@@ -1,7 +1,6 @@
 /**
  * @Name : tool liberary
- * @Author : l.w.kampfer@gmail.com || liaowei@58.com
- * @LastModified : 20110716
+ * @Author : l.w.kampfer@gmail.com 
  */
 
 (function( window ) {
@@ -45,6 +44,8 @@
 		}
 		return target;
 	};
+
+/******************************************* Utilities ******************************************/
 	kampfer.extend( kampfer, {
 		isObject : function( obj ) {
 			return Object.prototype.toString.call(obj)==='[object Object]' && 'isPrototypeOf' in obj;
@@ -54,9 +55,17 @@
 		},
 		isWindow : function( obj ) {
 			return obj && typeof obj === "object" && "setInterval" in obj;
+		},
+		trim : function( str ) {
+			var trimLeft = /^\s+/,
+				trimRight = /\s+$/;
+			return str === null ?
+			'' :
+			str.toString().replace( trimLeft, '' ).replace( trimRight, '' );
 		}	
 	});
-/******************************************* event ******************************************/
+
+/******************************************* Event ******************************************/
 	var eventIndex = 1;
 	//当传递匿名函数为handler时，removeEvent无法正常工作，W3C的addEventListener也有类似问题
 	kampfer.extend( kampfer, {
@@ -95,6 +104,7 @@
 			}
 		}
 	});
+
 /***************************************** Manipulation ****************************************/	
 	kampfer.extend( kampfer, {
 		getScrollTop : function( obj ) {
@@ -202,6 +212,63 @@
 			}
 		}
 	});
+
+/***************************************** CSS ****************************************/
+	kampfer.extend( kampfer, {
+		addClass : function( element, className ) {
+			var rspace = /\s+/;
+			if( element.nodeType != 1 || typeof className !== 'string' ) {
+				return false;
+			}
+			if( !element.className ) {
+				element.className = className;
+				return true;
+			}
+			var newClass = className.split(rspace),
+			setClass = element.className,
+			oldClass = ' ' + element.className + ' ';
+			for(var i = 0, len = newClass.length; i < len; i++) {
+				if( oldClass.indexOf(' ' + newClass[i] + ' ') < 0 ) {
+					setClass += ' ' + newClass[i];
+				}
+			}
+			element.className = kampfer.trim( setClass );
+			return true;
+		},
+		removeClass : function( element, className ) {
+			var rspace = /\s+/,
+				rclass = /[\n\t\r]/g ;
+			if( (className && typeof className === "string") || className === undefined ) {
+				var newClass = (className || "").split( rspace );
+				if ( element.nodeType === 1 && element.className ) {
+					if ( className ) {
+						var setClass = (" " + element.className + " ").replace(rclass, " ");
+						for ( var c = 0, cl = newClass.length; c < cl; c++ ) {
+							setClass = setClass.replace(" " + newClass[c] + " ", " ");
+						}
+						element.className = kampfer.trim( setClass );
+					} else {
+						element.className = "";
+					}
+				}
+			}
+		},
+		//ie使用javascript语法，火狐使用css语法
+		getStyle : function( element, styleProp ) {
+			if ( element.currentStyle ) {
+				var y = element.currentStyle[styleProp];
+			} else if ( window.getComputedStyle ) {
+				var y = document.defaultView.getComputedStyle( element, null ).getPropertyValue( styleProp );
+			} else {
+				return false;
+			}
+			return y;
+		},
+		setStyle : function( element, styleProp, value ) {
+			
+		}
+	});
+
 	if( window.kampfer && window.k ) {
 		window.alert('命名空间冲突！');
 		return false;
