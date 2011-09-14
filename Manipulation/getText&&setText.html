@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>20110913（获取节点文本）</title>
+		<!--
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js" type="text/javascript"></script>
+		-->
+	</head>
+	<body>
+		<div id="a">
+			<p>
+				<span>你好！</span>
+				<a href="#">点这里</a>
+				<span>再见！</span>
+			</p>
+		</div>
+		<script id="b">
+			var a = 1;
+		</script>
+		<script type="text/javascript">
+			var divA = document.getElementById('a');
+			var divB = document.getElementById('b');
+			//alert( divA.textContent );
+			//alert( divA.innerText );
+			//alert( divA.nodeValue );
+			
+			//contentText不会忽略空白的文本节点而且低版本ie不支持，innerHTML火狐不支持
+			//最后选择了jquery的遍历的方式来解决
+			//但是在ie6下此方法无法获取script元素内的文本
+			//对于火狐下空白节点的处理页存在问题
+			function getText( elems ) {
+				var text = '',
+					elem = null;
+				/*
+				// 节点集合无法通过isArray的测试
+				if( !isArray( elems ) ) {
+					var temp = elems;
+					elems = [];
+					elems.push( temp );
+				}
+				*/			
+				if( elems.length === undefined ) {
+					var temp = elems;
+					elems = [];
+					elems.push( temp );
+				}
+				for( var i = 0; elems[i]; i++ ) {
+					elem = elems[i];
+					if( elem.nodeType === 3 || elem.nodeType === 4 ) {
+						//如果文本元素的值里含有非换行非空白的字符，那么取得它的值
+						if( /[^\n\s]/i.test( elem.nodeValue ) ) {
+							text += elem.nodeValue;
+						}
+					} else if( elem.nodeType !== 8 ) {
+						text += getText( elem.childNodes );
+					}
+				}
+				return text;
+			}
+			function setText( elem, text ) {
+				if ( typeof text !== "object" && text !== undefined ) {
+					elem.innerHTML = '';
+					elem.appendChild( ( elem.ownerDocument || document ).createTextNode( text ) );
+				}
+			}
+			//setText( divA, '12121' );
+			//alert( $('span').text() );
+		</script>
+	</body>
+</html>

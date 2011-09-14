@@ -4,7 +4,7 @@
  * @LastModified : 20110716
  */
 
-(function() {
+(function( window ) {
 	var kampfer = {};
 	kampfer.extend = function() {
 		var src, target, name, len, i, deep, copyFrom, copyTo, clone;
@@ -20,7 +20,7 @@
 		}	
 		for( ; i < len; i++ ) {
 			src = arguments[i];
-			if( src != null ) { 
+			if( src !== null ) { 
 				for( name in src ) {
 					copyFrom = src[name];
 					copyTo = target[name];
@@ -37,14 +37,14 @@
 						}
 						target[name] = arguments.callee(deep,clone,copyFrom);
 					//如果当前的拷贝模式为浅拷贝（deep=false），或者当前待拷贝的对象属性是基本数据类型，并且已赋值
-					} else if( copyFrom != undefined ){
+					} else if( copyFrom !== undefined ){
 						target[name] = copyFrom;
 					}
 				}
 			}
 		}
 		return target;
-	}
+	};
 	kampfer.extend( kampfer, {
 		isObject : function( obj ) {
 			return Object.prototype.toString.call(obj)==='[object Object]' && 'isPrototypeOf' in obj;
@@ -61,7 +61,9 @@
 	//当传递匿名函数为handler时，removeEvent无法正常工作，W3C的addEventListener也有类似问题
 	kampfer.extend( kampfer, {
 		addEvent : function( element, type, handler ) {
-			if( !element._events ) element._events = {};
+			if( !element._events ) {
+				element._events = {};
+			}
 			var handlers = element._events[type];
 			if( !handlers ) {
 				//离散数组  （Dean Edwards 使用的是对象）
@@ -81,9 +83,11 @@
 				//而不直接使用外部函数的参数handlers，避免不必要的闭包的形成，提高性能
 				var handlers = this._events[event.type];
 				for(var i = 0, len = handlers.length; i < len; i++) {
-					if( handlers[i] ) handlers[i].call(this,event);
+					if( handlers[i] ) {
+						handlers[i].call(this,event);
+					}
 				}
-			}
+			};
 		},
 		removeEvent : function( element, type, handler ) {
 			if( element._events && element._events[type] ) {
@@ -91,7 +95,7 @@
 			}
 		}
 	});
-/***************************************** dimension ****************************************/	
+/***************************************** Manipulation ****************************************/	
 	kampfer.extend( kampfer, {
 		getScrollTop : function( obj ) {
 			if( kampfer.isWindow( obj) ) {
@@ -113,7 +117,7 @@
 			if( obj.nodeType === 9 ) {
 				return document.documentElement.scrollHeight;
 			}
-			if( obj.offsetHeight != 0 ) {
+			if( obj.offsetHeight !== 0 ) {
 				return obj.offsetHeight;
 			} else {
 				swap = function (element, options, callback) {
@@ -128,9 +132,9 @@
 					}	
 				};
 				cssShow = {
-					position : "absolute", 
-					visibility : "hidden", 
-			 		display : "block" 
+					position : "absolute",
+					visibility : "hidden",
+					display : "block"
 				};
 				swap(obj,cssShow,function() {
 					value = obj.offsetHeight;	
@@ -139,13 +143,14 @@
 			}
 		},
 		getWidth : function( obj ) {
+			var value,cssShow,swap;
 			if( kampfer.isWindow(obj) ) {
 				return document.documentElement.clientWidth;
 			}
 			if( obj.nodeType === 9 ) {
 				return document.documentElement.scrollWidth;
 			}
-			if( obj.offsetWidth != 0 ) {
+			if( obj.offsetWidth !== 0 ) {
 				return obj.offsetWidth;
 			} else {
 				swap = function (element, options, callback) {
@@ -162,18 +167,44 @@
 				cssShow = {
 					position : "absolute", 
 					visibility : "hidden", 
-			 		display : "block" 
+					display : "block"
 				};
 				swap(obj,cssShow,function() {
 					value = obj.offsetWidth;	
 				});
 				return value;	
 			}
+		},
+		getText : function getText( elems ) {
+			var text = '',
+				elem = null;		
+			if( elems.length === undefined ) {
+				var temp = elems;
+				elems = [];
+				elems.push( temp );
+			}
+			for( var i = 0; elems[i]; i++ ) {
+				elem = elems[i];
+				if( elem.nodeType === 3 || elem.nodeType === 4 ) {
+					if( /[^\n\s]/i.test( elem.nodeValue ) ) {
+						text += elem.nodeValue;
+					}
+				} else if( elem.nodeType !== 8 ) {
+					text += getText( elem.childNodes );
+				}
+			}
+			return text;
+		},
+		setText : function setText( elem, text ) {
+			if ( typeof text !== "object" && text !== undefined ) {
+				elem.innerHTML = '';
+				elem.appendChild( ( elem.ownerDocument || document ).createTextNode( text ) );
+			}
 		}
 	});
 	if( window.kampfer && window.k ) {
-		alert('命名空间冲突！');
+		window.alert('命名空间冲突！');
 		return false;
 	}
 	window.kampfer = window.k = kampfer;
-})();
+})( window );
