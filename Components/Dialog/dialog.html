@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>dialog</title>
+		<script type='text/javascript' src='dialog.js'></script>
+		<style type='text/css'>
+			body{height:2000px;width:2000px;background-color: #eee;}
+			#click,#click2{position:fixed;}
+			#click{left:0;top:0;}
+			#click2{left:330px;top:110px;}
+			.dialog_box{border:#ccc 1px solid;width:300px;display: none;}
+			.dialog_box .dialog_title_bar{background-color:#e2e2e2;height:25px;line-height:25px;}
+			.dialog_box .dialog_close{float:right; background: url(http://img.zjhn.com/upload/png/87/11.gif) center center no-repeat;cursor: pointer; height: 25px;width:20px;}
+			.dialog_box .dialog_title{padding:0 10px;}
+			.dialog_box .dialog_content{padding:10px;background-color: #fff;}
+		</style>
+	</head>
+
+	<body>
+		<a href='#' id='click'>点击打开</a>
+		<div id='dialog' name='dialog'>
+			<p>Some text for test Some text for test Some text for test Some text for test</p>
+			<p>Some text for test</p>
+			<p>Some text for test</p>
+			<p>Some text for test Some text for test Some text for test Some text for test</p>
+			<a href="#" id='click3'>你好</a>
+		</div>
+		<div id='dialog2' name='dialog' style='display:none;'>
+			111
+		</div>
+		<a href='#' id='click2'>点击关闭</a>
+		<script type='text/javascript'>
+			var div = document.getElementById('dialog');
+			var div2 = document.getElementById('dialog2');
+			var a = document.getElementById('click');
+			var a2 = document.getElementById('click2');
+			var a3 = document.getElementById('click3');
+			var dialog = new Dialog(div);
+			var dialog2 = new Dialog(div2);
+			//alert(div2.innerHTML);
+			dialog.init({
+				title : '提示',
+				width : 500,
+				dialogClass : 'theme'
+			});
+			dialog2.init({
+				title : '提示',
+				width : 500,
+				dialogClass : 'theme'
+			})
+			a.onclick = function() {
+				dialog.open();
+				return false;
+			}
+			a2.onclick = function() {
+				dialog.close();
+				return false;
+			}
+			a3.onclick = function() {
+				//alert(dialog.dialogBox.innerHTML);
+				//dialog.close();
+				dialog.setContent( div2.innerHTML );
+			}
+			//alert(dialog.dialogBox.childNodes[1].innerHTML);
+		</script>
+	</body>
+</html>
