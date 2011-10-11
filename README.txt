@@ -1,7 +1,8 @@
-ï»¿è¿™æ˜¯æˆ‘(liaowe@staff.sina.com.cn)çš„jså·¥å…·ç®±ã€‚
-å…¶ä¸­åŒ…å«äº†ä¸€äº›æˆ‘åœ¨å·¥ä½œä¸­ç»å¸¸ä½¿ç”¨åˆ°çš„jså·¥å…·å‡½æ•°ã€‚
-è¿™äº›å·¥å…·å‡½æ•°éƒ¨åˆ†æ¥è‡ªç½‘ç»œï¼Œéƒ¨åˆ†ç”±æˆ‘è‡ªå·±ç‹¬ç«‹å®Œæˆã€‚
-æœ€åŽæˆ‘å°è¯•åƒjqueryä¸€æ ·å°†è¿™äº›æ–¹æ³•é›†æˆåˆ°ä¸€ä¸ªå¯¹è±¡ä¸­ï¼Œå°±æ˜¯base.library.jsäº†ã€‚
+ÕâÊÇÎÒ(liaowe@staff.sina.com.cn)µÄjs¹¤¾ßÏä¡£
+ÆäÖÐ°üº¬ÁËÒ»Ð©ÎÒÔÚ¹¤×÷ÖÐ¾­³£Ê¹ÓÃµ½µÄjs¹¤¾ßº¯Êý¡£
+ÕâÐ©¹¤¾ßº¯Êý²¿·ÖÀ´×ÔÍøÂç£¬²¿·ÖÓÉÎÒ×Ô¼º¶ÀÁ¢Íê³É¡£
+×îºóÎÒ³¢ÊÔÏñjqueryÒ»Ñù½«ÕâÐ©·½·¨¼¯³Éµ½Ò»¸ö¶ÔÏóÖÐ£¬¾ÍÊÇbase.library.jsÁË¡£
 
-æ—¶é—´è¡¨
-2011-9-14 åˆ›å»ºæ­¤æ–‡ä»¶å¤¹ï¼Œéƒ¨åˆ†jså‡½æ•°åœ¨æ›´æ—©å·²åˆæ­¥å®Œæˆ
+Ê±¼ä±í
+2011-9-14 ´´½¨´ËÎÄ¼þ¼Ð£¬²¿·Öjsº¯ÊýÔÚ¸üÔçÒÑ³õ²½Íê³É
+2011-10-9 ´´½¨ajaxÎÄ¼þ¼Ð£¬Íê³Éajax¹¤¾ßº¯ÊýV1.0
