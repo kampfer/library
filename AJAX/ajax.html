@@ -13,22 +13,22 @@
 <body>
 <script type="text/javascript">
 var a = {
-		url : 'http://localhost/province.php',
-		//method : 'gEt',
+		url : 'http://localhost/test.php',
+		method : 'post',
 	    //async : 'true',
 		parameters : {
 			country : '001',
 			extra : '中国' 
 		},
-		timeout : 10000,
-		timeoutHandler : function() {},
+		timeout : 1000,
+		timeoutHandler : function() {alert(1);},
 		errorHandler : function() {},
 		callback : function( json ) { 
 			alert( json ); 
 		}
 	};
-ajax(a);
+//ajax(a);
 </script>
-
+<a href="#" onclick="ajax(a);return false;">ajax</a>
 </body>
 </html>

@@ -96,6 +96,9 @@
 						handlers[i].call(this,event);
 					}
 				}
+				if( event.stopDefaultAction ) {
+					return false;
+				}
 			};
 		},
 		removeEvent : function( element, type, handler ) {
