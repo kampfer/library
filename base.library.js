@@ -16,7 +16,7 @@
 			deep = target;
 			i = 2;
 			target = arguments[1];
-		}	
+		}
 		for( ; i < len; i++ ) {
 			src = arguments[i];
 			if( src !== null ) { 

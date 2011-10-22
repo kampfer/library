@@ -1,10 +1,10 @@
 /**
  * @Author l.w.kampfer@gmail.com
  * @Name AJAX工具函数
- * @Version 0.1
+ * @Version 1.0
  */
 
-var ajax = (function( window, kampfer ) {
+(function( window, kampfer ) {
 	//XHR构造函数
 	var _XHRFactories = [
 		function() { return new XMLHttpRequest(); },
@@ -115,6 +115,8 @@ var ajax = (function( window, kampfer ) {
 		}
 	};
 	
-	return ajax;
+	kampfer.extend( kampfer, {
+		ajax : ajax 
+	});
 	
 })( window, kampfer );
