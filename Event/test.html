@@ -6,10 +6,32 @@
 
 	<title>templates</title>
 	
+	<script type="text/javascript" src="../base.library.js"></script>
+	<script type="text/javascript" src="event.js"></script>
 </head>
 
 <body>
-
+<a href="kampfer.sina.com.cn" id="a">aaaa</a>
+<script type="text/javascript">
+var a = document.getElementById('a');
+k.addEvent( a, 'click', $alert );
+k.addEvent( a, 'click', $$alert );
+function $alert( event ) {
+	alert( event );
+	alert(event.type);
+	alert(this.nodeName);
+}
+function $$alert( e ) {
+	e.preventDefault();
+}
+function changeTextColor() {
+	this.style.color = 'red';
+}
+k.removeEvent( a, 'click', $alert );
+k.addEvent(a, 'mouseover', changeTextColor );
+k.addEvent(a, 'mouseout', function(){alert('out');});
+k.removeEvent(a, 'mouseover', changeTextColor );
+</script>
 
 </body>
 </html>

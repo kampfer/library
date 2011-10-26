@@ -6,16 +6,17 @@
  */
 
 (function( kampfer ) {
-	var eventID = 0;
+	var eventID = 1;
 	
 	function Event( event ) {
 		this.oEvent = event;
+		this.type = event.type;
 	}
 	(function( p ){
 		p.preventDefault = function(returnValue) {
 			var e = this.oEvent;
-			e.preventDefault();
-			e.returnValue = returnValue || false;
+			//e.preventDefault();
+			e.returnValue = false;
 		};
 	})( Event.prototype );
 	
@@ -32,9 +33,9 @@
 			}
 			if( !el.$eventsList[type] ) {
 				el.$eventsList[type] = [];
-			}
-			if( el['on' + type] ) {
-				el.$eventsList[type][0] = el['on' + type];
+				if( el['on' + type] ) {
+					el.$eventsList[type][0] = el['on' + type];
+				}
 			}
 			if( !fn.$ID ) {
 				fn.$ID = eventID++;
@@ -59,11 +60,12 @@
 	}
 	
 	function handler( event ) {
+		event = event || window.event;
 		event = new Event( event );
 		var eventsList = this.$eventsList[event.type];
 		for( var i = 0, l = eventsList.length; i < l; i++ ) {
 			if( eventsList[i] ) {
-				eventsList[i]( event );
+				eventsList[i].call( this, event );
 			}
 		}
 	}
