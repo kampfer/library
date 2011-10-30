@@ -48,10 +48,10 @@
 /******************************************* Utilities ******************************************/
 	kampfer.extend( kampfer, {
 		isObject : function( obj ) {
-			return Object.prototype.toString.call(obj)==='[object Object]' && 'isPrototypeOf' in obj;
+			return obj && Object.prototype.toString.call(obj)==='[object Object]' && 'isPrototypeOf' in obj;
 		},
 		isArray : function( obj ) {
-			return Object.prototype.toString.call(obj) === "[object Array]";
+			return obj && Object.prototype.toString.call(obj) === "[object Array]";
 		},
 		isWindow : function( obj ) {
 			return obj && typeof obj === "object" && "setInterval" in obj;
