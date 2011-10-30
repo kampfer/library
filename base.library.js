@@ -65,49 +65,6 @@
 		}	
 	});
 
-/******************************************* Event ******************************************/
-	var eventIndex = 1;
-	//当传递匿名函数为handler时，removeEvent无法正常工作，W3C的addEventListener也有类似问题
-	kampfer.extend( kampfer, {
-		addEvent : function( element, type, handler ) {
-			if( !element._events ) {
-				element._events = {};
-			}
-			var handlers = element._events[type];
-			if( !handlers ) {
-				//离散数组  （Dean Edwards 使用的是对象）
-				handlers = element._events[type] = [];
-				//handlers不存在，意味着没有使用修正后的函数绑定函数
-				//此时要检查是否已经使用传统模式定义了监听函数，如果有就保存
-				if( element['on'+type] ) {
-					handlers[0] = element['on'+type];
-				}
-			}
-			//为监听函数附加唯一的标识，方便在以后查找删除监听函数
-			handler._id = eventIndex++;
-			handlers[handler._id] = handler;
-			element['on'+type] = function(event) {
-				event = event || window.event;
-				//重新定义handlers并读取已经附加在对象上的事件属性_evnet 
-				//而不直接使用外部函数的参数handlers，避免不必要的闭包的形成，提高性能
-				var handlers = this._events[event.type];
-				for(var i = 0, len = handlers.length; i < len; i++) {
-					if( handlers[i] ) {
-						handlers[i].call(this,event);
-					}
-				}
-				if( event.stopDefaultAction ) {
-					return false;
-				}
-			};
-		},
-		removeEvent : function( element, type, handler ) {
-			if( element._events && element._events[type] ) {
-				delete element._events[type][handler._id];
-			}
-		}
-	});
-
 /***************************************** Manipulation ****************************************/	
 	kampfer.extend( kampfer, {
 		getScrollTop : function( obj ) {
@@ -188,7 +145,7 @@
 				return value;	
 			}
 		},
-		getText : function getText( elems ) {
+		getText : function( elems ) {
 			var text = '',
 				elem = null;		
 			if( elems.length === undefined ) {
@@ -208,7 +165,7 @@
 			}
 			return text;
 		},
-		setText : function setText( elem, text ) {
+		setText : function( elem, text ) {
 			if ( typeof text !== "object" && text !== undefined ) {
 				elem.innerHTML = '';
 				elem.appendChild( ( elem.ownerDocument || document ).createTextNode( text ) );
@@ -277,4 +234,5 @@
 		return false;
 	}
 	window.kampfer = window.k = kampfer;
+	
 })( window );

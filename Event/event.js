@@ -5,7 +5,7 @@
  * @author l.w.kampfer@gmail.com
  */
 
-(function( kampfer ) {
+(function( kampfer, window ) {
 	var eventID = 1;
 	
 	function Event( event ) {
@@ -15,10 +15,20 @@
 	(function( p ){
 		p.preventDefault = function(returnValue) {
 			var e = this.oEvent;
-			//e.preventDefault();
 			e.returnValue = false;
 		};
 	})( Event.prototype );
+	
+	function handler( event ) {
+		event = event || window.event;
+		event = new Event( event );
+		var eventsList = this.$eventsList[event.type];
+		for( var i = 0, l = eventsList.length; i < l; i++ ) {
+			if( eventsList[i] ) {
+				eventsList[i].call( this, event );
+			}
+		}
+	}
 	
 	function addEvent( el, type, fn ) {
 		if( arguments.length < 3 || typeof el !== 'object' || 
@@ -59,20 +69,9 @@
 		}
 	}
 	
-	function handler( event ) {
-		event = event || window.event;
-		event = new Event( event );
-		var eventsList = this.$eventsList[event.type];
-		for( var i = 0, l = eventsList.length; i < l; i++ ) {
-			if( eventsList[i] ) {
-				eventsList[i].call( this, event );
-			}
-		}
-	}
-	
 	kampfer.extend( kampfer, {
 		addEvent : addEvent,
 		removeEvent : removeEvent
 	});
 	
-})( kampfer );
+})( kampfer, window );

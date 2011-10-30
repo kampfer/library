@@ -14,23 +14,22 @@
 <a href="kampfer.sina.com.cn" id="a">aaaa</a>
 <script type="text/javascript">
 var a = document.getElementById('a');
-k.addEvent( a, 'click', $alert );
-k.addEvent( a, 'click', $$alert );
-function $alert( event ) {
-	alert( event );
-	alert(event.type);
-	alert(this.nodeName);
-}
-function $$alert( e ) {
-	e.preventDefault();
-}
-function changeTextColor() {
-	this.style.color = 'red';
-}
-k.removeEvent( a, 'click', $alert );
-k.addEvent(a, 'mouseover', changeTextColor );
-k.addEvent(a, 'mouseout', function(){alert('out');});
-k.removeEvent(a, 'mouseover', changeTextColor );
+var events = {
+	alert1 : function(e) {
+		e.preventDefault();
+	},
+	alert2 : function() {
+		alert( this.nodeName );
+	},
+	alert3 : function() {
+		alert( 1 );
+	}
+};
+k.addEvent( a, 'click', events.alert1 );
+k.addEvent( a, 'click', events.alert2 );
+k.addEvent( a, 'click', events.alert3 );
+k.addEvent( a, 'click', events.alert3 );
+k.removeEvent( a, 'click', events.alert2 );
 </script>
 
 </body>
