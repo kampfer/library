@@ -15,20 +15,22 @@
 var a = {
 		url : 'http://localhost/test.php',
 		method : 'post',
-	    //async : 'true',
+	    async : true,
 		parameters : {
 			country : '001',
 			extra : '中国' 
 		},
-		timeout : 1000,
-		timeoutHandler : function() {alert(1);},
-		errorHandler : function() {},
-		callback : function( json ) { 
-			alert( json ); 
-		}
+		timeout : 4000,
+		ontimeout : function() {alert('timeout');},
+		onerror : function() {alert('error');},
+		onsuccess : function( json ) {
+			alert( this );
+			alert( json );
+		},
+		//context : window
 	};
 //ajax(a);
 </script>
-<a href="#" onclick="k.ajax(a);return false;">ajax</a>
+<a href="#" onclick="k.ajax(a);alert('finish');return false;">ajax</a>
 </body>
 </html>

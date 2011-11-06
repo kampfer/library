@@ -15,12 +15,14 @@
 	var _defaultSettings = {
 		url : '',
 		method : 'GET',
-	    //async : 'true',
+	    async : true,
 		parameters : {},
 		timeout : 10000,
-		timeoutHandler : function() {},
-		errorHandler : function() {},
-		callback : function() {},
+		ontimeout : function() {},
+		onerror : function() {},
+		onsuccess : function() {},
+		onbeforesend : function() {},
+		context : null,
 		headers : {}
 	};
 	
@@ -76,13 +78,17 @@
 			timer,
 			url,
 			parameters;
-		options = kampfer.extend( _defaultSettings, options );
-		if( options.timeout ) {
+		options = kampfer.extend( {}, _defaultSettings, options );
+		//设置执行上下文
+		if( !options.context ) {
+			options.context = newXHR;
+		}
+		if( options.ontimeout ) {
 			//闭包
 			timer = setTimeout( function(){
 				newXHR.abort();
-				if ( options.timeoutHandler ) {
-					options.timeoutHandler( options.url );
+				if ( options.ontimeout ) {
+					options.ontimeout.call( options.context, options );
 				}
 			}, options.timeout );
 		}
@@ -92,10 +98,10 @@
 					clearTimeout( timer );
 				}
 				if( newXHR.status === 200 ) {
-					options.callback( _getResponse( newXHR ) );
+					options.onsuccess.call( options.context, _getResponse( newXHR ) );
 				} else {
-					if( options.errorHandler ) {
-						options.errorHandler( newXHR );
+					if( options.onerror ) {
+						options.onerror.call( options.context, newXHR );
 					}
 				}
 			}
@@ -106,10 +112,12 @@
 			if( options.parameters ) {
 				url += '?' + parameters + '&_=' + ( +new Date() );
 			}
-			newXHR.open( 'GET', url, true );
+			newXHR.open( 'GET', url, options.async );
+			options.onbeforesend && options.onbeforesend.call( options.context, newXHR );
 			newXHR.send( null );
 		} else if( options.method.toUpperCase() === 'POST' ) {
-			newXHR.open( 'POST', url, true );
+			newXHR.open( 'POST', url, options.async );
+			options.onbeforesend && options.onbeforesend.call( options.context, newXHR );
 			newXHR.setRequestHeader( 'Content-type', 'application/x-www-form-urlencoded' );
 			newXHR.send( parameters );
 		}

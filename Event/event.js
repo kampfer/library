@@ -11,12 +11,28 @@
 	function Event( event ) {
 		this.oEvent = event;
 		this.type = event.type;
+		this.target = event.target || event.srcElement;
 	}
 	(function( p ){
+		
+		//阻止默认事件
 		p.preventDefault = function(returnValue) {
 			var e = this.oEvent;
 			e.returnValue = false;
 		};
+		
+		//阻止事件传播
+		p.stopPropagation = function() {
+			var e = this.oEvent;
+			//ie
+			if( typeof e.cancelBubble !== 'undefined' ) {
+				e.cancelBubble = true;
+			//chrome firefox ...
+			} else {
+				e.stopPropagation();
+			}
+		};
+		
 	})( Event.prototype );
 	
 	function handler( event ) {
