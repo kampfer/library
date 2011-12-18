@@ -13,12 +13,12 @@
 		i = 1;
 		len = arguments.length;
 		deep = false;
-		target = arguments[0];
+		target = arguments[0] || {};
 		//如果第一个参数为布尔型
 		if( typeof target === 'boolean' ) {
 			deep = target;
 			i = 2;
-			target = arguments[1];
+			target = arguments[1] || {};
 		}
 		for( ; i < len; i++ ) {
 			src = arguments[i];
