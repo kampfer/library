@@ -5,7 +5,7 @@
  * @author l.w.kampfer@gmail.com
  */
 
-(function( kampfer, window ) {
+(function( kampfer ) {
 	
 	var eventID = 1;
 	
@@ -15,28 +15,26 @@
 		this.target = event.target || event.srcElement;
 	}
 	
-	(function( p ){
+	var p = Event.prototype;
 		
-		//阻止默认事件
-		p.preventDefault = function(returnValue) {
-			var e = this.oEvent;
-			e.returnValue = false;
-		};
-		
-		//阻止事件传播
-		p.stopPropagation = function() {
-			var e = this.oEvent;
-			//ie
-			if( typeof e.cancelBubble !== 'undefined' ) {
-				e.cancelBubble = true;
-			//chrome firefox ...
-			} else {
-				e.stopPropagation();
-			}
-		};
-		
-	})( Event.prototype );
+	//阻止默认事件
+	p.preventDefault = function( returnValue ) {
+		var e = this.oEvent;
+		e.returnValue = false;
+	};
 	
+	//阻止事件传播
+	p.stopPropagation = function() {
+		var e = this.oEvent;
+		//ie
+		if( typeof e.cancelBubble !== 'undefined' ) {
+			e.cancelBubble = true;
+		//chrome firefox ...
+		} else {
+			e.stopPropagation();
+		}
+	};
+		
 	function handler( event ) {
 		event = event || window.event;
 		event = new Event( event );
@@ -54,9 +52,12 @@
 	function removeEvent( el, type, fn ) {
 	}
 	
+	function trigger() {
+	}
+	
 	kampfer.extend( kampfer, {
 		addEvent : addEvent,
 		removeEvent : removeEvent
 	});
 	
-})( kampfer, window );
+})( kampfer );

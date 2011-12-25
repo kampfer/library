@@ -77,7 +77,15 @@
 		
 		error : function( e ) {
 			console.log( e );
+		},
+		
+		isEmptyObject : function( obj ) {
+			for ( var name in obj ) {
+				return false;
+			}
+			return true;
 		}
+		
 	});
 	
 })( kampfer, window );
