@@ -6,30 +6,35 @@
 
 	<title>templates</title>
 	
-	<script type="text/javascript" src="../base.library.js"></script>
+	<script type="text/javascript" src="../core/core.js"></script>
+	<script type="text/javascript" src="../Components/Data/data.js"></script>
 	<script type="text/javascript" src="event.js"></script>
 </head>
 
 <body>
-<a href="kampfer.sina.com.cn" id="a">aaaa</a>
+<!--
+<div id="b">
+<a href="http://www.baidu.com" id="a" onclick="alert('click in line');">aaaa</a>
+</div>
+-->
+<div id="b">
+<a href="http://www.baidu.com" id="a" onclick="alert('click in line');">aaaa</a>
+</div>
 <script type="text/javascript">
-var a = document.getElementById('a');
-var events = {
-	alert1 : function(e) {
-		e.preventDefault();
-	},
-	alert2 : function() {
-		alert( this.nodeName );
-	},
-	alert3 : function() {
-		alert( 1 );
+	var a = document.getElementById('a');
+	var b = document.getElementById('b');
+	function alertId() {
+		alert('click on ' + this.id);
 	}
-};
-k.addEvent( a, 'click', events.alert1 );
-k.addEvent( a, 'click', events.alert2 );
-k.addEvent( a, 'click', events.alert3 );
-k.addEvent( a, 'click', events.alert3 );
-k.removeEvent( a, 'click', events.alert2 );
+	k.addEvent( a, 'click', alertId);
+	k.addEvent( b, 'click', alertId);
+	k.addEvent( b, 'click', function(){
+		alert('bind again!');
+		return false;
+	});
+	k.removeEvent( b, 'click' );
+	//k.removeEvent();
+	k.trigger( a, 'click' );
 </script>
 
 </body>

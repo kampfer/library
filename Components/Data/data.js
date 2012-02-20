@@ -158,7 +158,7 @@
 					for( var i = 0, l = name.length; i < l; i++ ) {
 						delete thisCache[name[i]];
 					}
-					if( !kampfer.isEmptyObj( thisCache ) ) {
+					if( !kampfer.isEmptyObject( thisCache ) ) {
 						return;
 					}
 				}
@@ -167,7 +167,7 @@
 			if( !inInternal ) {
 				delete cache[cacheId].data;
 			}
-			if( kampfer.isEmptyObj( cache[cacheId] ) ) {
+			if( kampfer.isEmptyObject( cache[cacheId] ) ) {
 				delete cache[cacheId];
 			}
 			
