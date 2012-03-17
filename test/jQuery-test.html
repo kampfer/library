@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+  p { background:yellow; font-weight:bold; cursor:pointer; 
+      padding:5px; }
+  p.over { background: #ccc; }
+  span { color:red; }
+  </style>
+ <script type="text/javascript" src="jquery-1.7.1.js"></script>
+</head>
+<body>
+  <p>Click me!</p>
+
+  <span></span>
+<script>
+    $("body").delegate("p", "click", function(){
+      $(this).after("<p>Another paragraph!</p>");
+    });
+</script>
+
+</body>
+</html>
