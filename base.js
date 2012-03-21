@@ -150,7 +150,7 @@
 	/**
 	 * 注册命名空间。默认在kampfer.global上注册。也可以指定其他对象。
 	 * @param	ns{string}	命名空间名字
-	 * @param	object{*}	赋给名空间的值
+	 * @param	object{*}	赋给名空间的值，默认为空对象。
 	 * @param	objectToExportTo{object}	命名空间的宿主对象。默认为kampfer.global
 	 */
 	kampfer.exportNamespace = function( ns, object, objectToExportTo ) {
@@ -348,16 +348,31 @@
 		
 		kampfer._findBasePath();
 		
+		kampfer._importScript( kampfer.basePath + 'deps.js'	);
+		
 	}
 
 	
 	
-//=================================================================
+//=====================================================================================
 // 工具函数
-//=================================================================
-
+//=====================================================================================
+	
 	/**
-	 * 检查给定的参数是否被定义
+	 * Returns true if the specified value is not |undefined|.
+	 * WARNING: Do not use this to test if an object has a property. Use the in
+	 * operator instead.  Additionally, this function assumes that the global
+	 * undefined variable has not been redefined.
+	 * @param {*} val Variable to test.
+	 * @return {boolean} Whether variable is defined.
+	 */
+	kampfer.isDef = function(val) {
+		return val !== undefined;
+	};
+	
+	
+	/**
+	 * 检查给定的参数是否被定义，且不为空值。
 	 */
 	kampfer.isDefAndNotNull = function(val) {
 		return val != null;
@@ -377,6 +392,44 @@
 	
 	
 	/**
+	 * Returns true if the specified value is an array
+	 * @param val{*} Variable to test.
+	 * @return {boolean} Whether variable is an array.
+	 */
+	kampfer.isArray = function(val) {
+		return kampfer.type(val) === 'array';
+	};
+	
+	
+	/**
+	 * Returns true if the specified value is an object. 
+	 * This included DOM nodes and native Object.
+	 * @param val{*}  Variable to test.
+	 * @return {boolean} Whether variable is an object.
+	 */
+	kampfer.isObject = function(val) {
+		return kampfer.type(val) === 'object';
+	};
+	
+	
+	/**
+	 * Return true if the specified object has no property included
+	 * property inherit from prototype.
+	 * @param val{object}	Object to test.
+	 * @return {boolean}	Whether Object is empty.
+	 */
+	kampfer.isEmptyObject = function(val) {
+		if( kampfer.type(val) !== 'object' ) {
+			return;
+		}
+		for( var name in val ) {
+			return false;
+		}
+		return true;
+	};
+	
+	
+	/**
 	 * 迭代函数。只能针对数组使用。
 	 * @param	array{array}	需要执行迭代的数组
 	 * @param	fn{function}	迭代时执行的函数。将会被依次传递如下参数：
@@ -387,14 +440,16 @@
 	 */
 	kampfer.each = function( array, fn, thisObj ) {
 		for( var i = 0, len = (array && array.length) || 0; i < len; ++i ) {
-			//if( i in array ) {
+			// 注意：array可以是一个类似数组的对象，所以这里添加一个in判断，
+			// 避免在array[i] undefined的情形下依然迭代一次。
+			if( i in array ) {
 				fn.call( thisObj || kampfer.global, i, array[i], array );
-			//}
+			}
 		}
 	};
 	
 	
-	/** 
+	/**
 	 *	拷贝对象属性。当传递多个对象时，所有属性将被拷贝到第一个对象上。
 	 *	当只传递了一个对象时，会将该对象的属性直接拷贝到kampfer对象上。
 	 *	当第一个参数是布尔类型时：ture为深拷贝，false为浅拷贝。默认为
@@ -459,6 +514,16 @@
 	
 	//保存一个空函数的引用
 	kampfer.emptyFn = function() {};
+	
+	
+	//返回当前时间戳
+	kampfer.now = function() {
+		return +new Date();
+	};
+	
+	
+	//为kampfer设置一个唯一的标识
+	kampfer.expando = 'kampfer' + kampfer.now();
 	
 	
 	/**

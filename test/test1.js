@@ -2,6 +2,17 @@
  * @author liaowei
  */
 
-kampfer.require('test2');
+kampfer.require('data');
 
-console.log(a);
+kampfer.register( 'test1', function($) {
+	
+	var div = document.getElementById('div_one');
+	
+	console.log(div);
+	
+	console.log($);
+	
+	console.log($.data.hasData( div ));
+	
+});
+
